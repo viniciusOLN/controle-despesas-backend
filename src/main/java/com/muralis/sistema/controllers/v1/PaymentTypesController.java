@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConfig.API_BASE + "/payments")
+@RequestMapping(value = RestConfig.API_BASE + "/tipo-pagamentos")
 public class PaymentTypesController {
 
     @Autowired
