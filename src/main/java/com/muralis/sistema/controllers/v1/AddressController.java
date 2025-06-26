@@ -8,6 +8,7 @@ import com.muralis.sistema.controllers.response.PaymentTypeResponse;
 import com.muralis.sistema.controllers.response.ResponseBase;
 import com.muralis.sistema.services.AddressService;
 import com.muralis.sistema.services.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
@@ -27,28 +28,28 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseBase<List<AddressResponse>>> getAll() {
+    public ResponseEntity<ResponseBase<List<AddressResponse>>> getAllAddresses() {
         return ResponseEntity.ok(ResponseBase.ok(addressService.getAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseBase<AddressResponse>> getById(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<ResponseBase<AddressResponse>> getAdressById(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
         return ResponseEntity.ok(ResponseBase.ok(addressService.getById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<ResponseBase<Integer>> create(@RequestBody AddressRequest request) {
+    public ResponseEntity<ResponseBase<Integer>> createAddress(@RequestBody @Valid AddressRequest request) {
         return ResponseEntity.ok(ResponseBase.ok(addressService.create(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseBase<String>> update(@PathVariable Integer id, @RequestBody AddressRequest request) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<ResponseBase<String>> updateAddress(@PathVariable Integer id, @RequestBody @Valid AddressRequest request) throws ChangeSetPersister.NotFoundException {
         addressService.update(id, request);
         return ResponseEntity.ok(ResponseBase.ok("Endereço atualizado com sucesso!"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseBase<String>> delete(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<ResponseBase<String>> deleteAdress(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
         addressService.delete(id);
         return ResponseEntity.ok(ResponseBase.ok("Endereço deletado com sucesso!"));
     }

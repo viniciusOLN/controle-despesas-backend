@@ -1,13 +1,11 @@
 package com.muralis.sistema.services;
 
 import com.muralis.sistema.controllers.request.AddressRequest;
-import com.muralis.sistema.controllers.request.PaymentTypeRequest;
 import com.muralis.sistema.controllers.response.AddressResponse;
-import com.muralis.sistema.controllers.response.PaymentTypeResponse;
+import com.muralis.sistema.exceptions.CustomException;
+import com.muralis.sistema.exceptions.DatabaseException;
 import com.muralis.sistema.models.Address;
-import com.muralis.sistema.models.PaymentTypes;
 import com.muralis.sistema.repositories.AddressRepository;
-import com.muralis.sistema.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -26,26 +24,35 @@ public class AddressService {
     }
 
     public List<AddressResponse> getAll() {
-        return addressRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+        try {
+            return addressRepository.findAll().stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new DatabaseException("Erro ao buscar endereços." + e.getMessage());
+        }
     }
 
-    public AddressResponse getById(Integer id) throws ChangeSetPersister.NotFoundException {
+    public AddressResponse getById(Integer id) throws CustomException {
         Address address = addressRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                .orElseThrow(() -> new CustomException("Endereço não encontrado. Por favor utilize um id válido."));
         return toResponse(address);
     }
 
     public Integer create(AddressRequest request) {
+
         Address address = toEntity(request);
-        Address saved = addressRepository.save(address);
-        return saved.getId();
+        try{
+            Address saved = addressRepository.save(address);
+            return saved.getId();
+        }catch (Exception e){
+            throw new DatabaseException("Erro ao tentar criar endereço. " + e.getMessage());
+        }
     }
 
-    public AddressResponse update(Integer id, AddressRequest request) throws ChangeSetPersister.NotFoundException {
+    public AddressResponse update(Integer id, AddressRequest request) throws CustomException {
         Address existing = addressRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                .orElseThrow(() -> new CustomException("Endereço não encontrado."));
 
         existing.setState(request.getState());
         existing.setCity(request.getCity());
@@ -54,14 +61,22 @@ public class AddressService {
         existing.setNumber(request.getNumber());
         existing.setComplement(request.getComplement());
 
-        Address updated = addressRepository.save(existing);
-        return toResponse(updated);
+        try{
+            Address updated = addressRepository.save(existing);
+            return toResponse(updated);
+        } catch (Exception e) {
+            throw new DatabaseException("Erro ao tentar atualizar endereço. " + e.getMessage());
+        }
     }
 
-    public void delete(Integer id) throws ChangeSetPersister.NotFoundException {
+    public void delete(Integer id) throws CustomException {
         Address address = addressRepository.findById(Long.valueOf(id))
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-        addressRepository.delete(address);
+                .orElseThrow( () -> new CustomException("Endereço não encontrado."));
+        try{
+            addressRepository.delete(address);
+        }catch (Exception e) {
+            throw new DatabaseException("Erro ao tentar deletar endereço. " + e.getMessage());
+        }
     }
 
 

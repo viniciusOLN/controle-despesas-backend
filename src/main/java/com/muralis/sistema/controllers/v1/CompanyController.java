@@ -1,0 +1,49 @@
+package com.muralis.sistema.controllers.v1;
+
+import com.muralis.sistema.config.RestConfig;
+import com.muralis.sistema.controllers.request.CompanyRequest;
+import com.muralis.sistema.controllers.response.CompanyResponse;
+import com.muralis.sistema.controllers.response.ResponseBase;
+import com.muralis.sistema.services.CompanyService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(RestConfig.API_BASE + "/empresas")
+public class CompanyController {
+
+    @Autowired
+    private CompanyService companyService;
+
+    @GetMapping
+    public ResponseEntity<ResponseBase<List<CompanyResponse>>> getAll() {
+        return ResponseEntity.ok(ResponseBase.ok(companyService.getAll()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseBase<CompanyResponse>> getById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+        return ResponseEntity.ok(ResponseBase.ok(companyService.getById(id)));
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseBase<Integer>> create(@RequestBody @Valid CompanyRequest request) {
+        return ResponseEntity.ok(ResponseBase.ok(companyService.create(request)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseBase<String>> update(@PathVariable Long id, @RequestBody @Valid CompanyRequest request) throws ChangeSetPersister.NotFoundException {
+        companyService.update(id, request);
+        return ResponseEntity.ok(ResponseBase.ok("Company updated successfully"));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseBase<String>> delete(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+        companyService.delete(id);
+        return ResponseEntity.ok(ResponseBase.ok("Company deleted successfully"));
+    }
+}

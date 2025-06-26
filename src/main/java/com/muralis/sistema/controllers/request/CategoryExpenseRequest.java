@@ -1,11 +1,12 @@
 package com.muralis.sistema.controllers.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class PaymentTypeRequest {
+public class CategoryExpenseRequest {
+    @NotBlank
+    private String name;
     @NotBlank
     private String description;
 }

@@ -2,7 +2,8 @@ package com.muralis.sistema.services;
 
 import com.muralis.sistema.controllers.request.PaymentTypeRequest;
 import com.muralis.sistema.controllers.response.PaymentTypeResponse;
-import com.muralis.sistema.models.PaymentTypes;
+import com.muralis.sistema.exceptions.CustomException;
+import com.muralis.sistema.models.PaymentType;
 import com.muralis.sistema.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,10 @@ public class PaymentService {
     }
 
     public List<PaymentTypeResponse> getAllPaymentTypes() throws Exception {
-        List<PaymentTypes> paymentTypes = paymentRepository.findAll();
+        List<PaymentType> paymentTypes = paymentRepository.findAll();
 
         if(paymentTypes.isEmpty()){
-            throw new Exception("nenhum dado cadastrado");
+            throw new CustomException("Nenhum dado cadastrado");
         }
 
         return paymentTypes.stream()
@@ -37,7 +38,7 @@ public class PaymentService {
     }
 
     public PaymentTypeResponse getById(Long id) {
-        PaymentTypes payment = paymentRepository.findById(id)
+        PaymentType payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de pagamento não encontrado"));
 
         return PaymentTypeResponse.builder()
@@ -47,25 +48,25 @@ public class PaymentService {
     }
 
     public Long create(PaymentTypeRequest request) {
-        PaymentTypes payment = new PaymentTypes();
+        PaymentType payment = new PaymentType();
         payment.setDescription(request.getDescription());
 
-        PaymentTypes saved = paymentRepository.save(payment);
+        PaymentType saved = paymentRepository.save(payment);
 
         return saved.getId();
     }
 
     public void update(Long id, PaymentTypeRequest request) {
-        PaymentTypes existing = paymentRepository.findById(id)
+        PaymentType existing = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de pagamento não encontrado"));
 
         existing.setDescription(request.getDescription());
 
-        PaymentTypes updated = paymentRepository.save(existing);
+        PaymentType updated = paymentRepository.save(existing);
     }
 
     public void delete(Long id) {
-        PaymentTypes existing = paymentRepository.findById(id)
+        PaymentType existing = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de pagamento não encontrado"));
 
         paymentRepository.delete(existing);
