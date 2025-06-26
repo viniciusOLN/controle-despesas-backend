@@ -14,18 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConfig.API_BASE)
+@RequestMapping(value = RestConfig.API_BASE + "/despesas")
 public class ExpensesController {
 
-    @Autowired
-    public PaymentService paymentService;
 
-    ExpensesController(PaymentService paymentService){
-        this.paymentService = paymentService;
+
+    ExpensesController(){
+
     }
 
     @GetMapping()
-    public ResponseEntity<ResponseBase<List<PaymentTypeResponse>>> hello(){
+    public ResponseEntity<ResponseBase<List<PaymentTypeResponse>>> getAllPaymentTypes(){
         List<PaymentTypeResponse> list = new ArrayList<>();
         return ResponseEntity.ok(ResponseBase.ok(list));
     }

@@ -1,10 +1,9 @@
 package com.muralis.sistema.controllers.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 public class PaymentTypeResponse {
 
     private int id;
