@@ -1,11 +1,13 @@
 #!/bin/sh
 
-# Espera até conseguir conectar na porta do banco
-echo "Aguardando MySQL em $HOST:$PORT..."
+host="mysql"
+port=3306
 
-while ! timeout 1 bash -c "echo > /dev/tcp/$HOST/$PORT" 2>/dev/null; do
+echo "Aguardando o MySQL em $host:$port..."
+
+while ! nc -z $host $port; do
   sleep 1
 done
 
-echo "MySQL está pronto! Iniciando aplicação..."
+echo "MySQL está pronto. Iniciando a aplicação..."
 exec "$@"
