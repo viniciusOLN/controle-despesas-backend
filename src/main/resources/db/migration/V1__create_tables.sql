@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS tipos_pagamentos (
 CREATE TABLE IF NOT EXISTS endereco (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uf VARCHAR(255),
+    cep VARCHAR(255),
     municipio VARCHAR(255),
     bairro VARCHAR(255),
     logradouro VARCHAR(255),

@@ -17,6 +17,8 @@ public class Address {
 
     @Column(name = "uf")
     private String state;
+    @Column(name = "cep")
+    private String zipCode;
     @Column(name = "municipio")
     private String city;
     @Column(name = "bairro")

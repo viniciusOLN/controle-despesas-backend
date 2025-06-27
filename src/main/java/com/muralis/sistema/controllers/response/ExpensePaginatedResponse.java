@@ -27,6 +27,7 @@ public class ExpensePaginatedResponse {
     private Long addressId;
     private String state;
     private String city;
+    private String zipCode;
     private String district;
     private String street;
     private String number;

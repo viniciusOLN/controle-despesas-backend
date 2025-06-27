@@ -7,7 +7,6 @@ import com.muralis.sistema.exceptions.DatabaseException;
 import com.muralis.sistema.models.Address;
 import com.muralis.sistema.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +21,23 @@ public class AddressService {
     AddressService(AddressRepository addressRepository){
         this.addressRepository =  addressRepository;
     }
+
+    public boolean addressExists(AddressRequest request) {
+        try{
+            return addressRepository.findExactMatch(
+                    request.getState(),
+                    request.getZipCode(),
+                    request.getCity(),
+                    request.getDistrict(),
+                    request.getStreet(),
+                    request.getNumber(),
+                    request.getComplement()
+            ).isPresent();
+        }catch (Exception e){
+            throw new DatabaseException("Erro ao buscar endereço." + e.getMessage());
+        }
+    }
+
 
     public List<AddressResponse> getAll() {
         try {
@@ -56,6 +72,7 @@ public class AddressService {
 
         existing.setState(request.getState());
         existing.setCity(request.getCity());
+        existing.setZipCode(request.getZipCode());
         existing.setDistrict(request.getDistrict());
         existing.setState(request.getStreet());
         existing.setNumber(request.getNumber());
@@ -83,6 +100,7 @@ public class AddressService {
     private Address toEntity(AddressRequest request) {
         return Address.builder()
                 .state(request.getState())
+                .zipCode(request.getZipCode())
                 .city(request.getCity())
                 .district(request.getDistrict())
                 .street(request.getStreet())
@@ -94,6 +112,7 @@ public class AddressService {
     private AddressResponse toResponse(Address address) {
         return AddressResponse.builder()
                 .id(address.getId())
+                .zipCode(address.getZipCode())
                 .state(address.getState())
                 .city(address.getCity())
                 .district(address.getDistrict())

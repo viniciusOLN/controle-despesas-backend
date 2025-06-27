@@ -42,6 +42,12 @@ public class AddressController {
         return ResponseEntity.ok(ResponseBase.ok(addressService.getById(id)));
     }
 
+    @Operation(summary = "Verifica se o endereço já existe.")
+    @PostMapping("/exists")
+    public ResponseEntity<ResponseBase<Boolean>> checkIfAddressExists(@RequestBody @Valid AddressRequest request) {
+        return ResponseEntity.ok(ResponseBase.ok(addressService.addressExists(request)));
+    }
+
     @Operation(summary = "Criar endereço")
     @PostMapping
     public ResponseEntity<ResponseBase<Integer>> createAddress(@RequestBody @Valid AddressRequest request) {

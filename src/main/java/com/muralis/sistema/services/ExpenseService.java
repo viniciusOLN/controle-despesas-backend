@@ -157,6 +157,7 @@ public class ExpenseService {
                 .categoryName(expense.getCategory().getName())
 
                 .addressId(Long.valueOf(expense.getLocal().getId()))
+                .zipCode(expense.getLocal().getZipCode())
                 .state(expense.getLocal().getState())
                 .city(expense.getLocal().getCity())
                 .district(expense.getLocal().getDistrict())

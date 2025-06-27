@@ -11,6 +11,8 @@ public class AddressRequest {
     @NotBlank
     private String city;
     @NotBlank
+    private String zipCode;
+    @NotBlank
     private String district;
     @NotBlank
     private String street;
