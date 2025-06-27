@@ -34,7 +34,7 @@ class ExpenseServiceTest {
                 .description("Aqui uma descrição da despesa que eu fiz")
                 .paymentType(new PaymentType(1L, "Cartão"))
                 .category(new CategoryExpense(1, "Alimentação", "Categoria de comidas"))
-                .local(new Address(1, "SP", "São Paulo", "Centro", "Rua Edivaldo Fernandes", "50", "Minha casa ali"))
+                .local(new Address(1, "SP", "62300000", "São Paulo", "Centro", "Rua Edivaldo Fernandes", "50", "Minha casa ali"))
                 .build();
 
         when(expenseRepository.findAll()).thenReturn(List.of(expense));
