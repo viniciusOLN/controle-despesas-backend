@@ -1,7 +1,7 @@
 package com.muralis.sistema.services;
 
 import com.muralis.sistema.controllers.request.ExpenseRequest;
-import com.muralis.sistema.controllers.response.CompanyResponse;
+import com.muralis.sistema.controllers.response.ExpensePaginatedResponse;
 import com.muralis.sistema.controllers.response.ExpenseResponse;
 import com.muralis.sistema.exceptions.CustomException;
 import com.muralis.sistema.exceptions.DatabaseException;
@@ -10,8 +10,15 @@ import com.muralis.sistema.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +39,20 @@ public class ExpenseService {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    public Page<ExpensePaginatedResponse> getByCompanyCurrentMonth(Long companyId, Pageable pageable) {
+        LocalDate firstDay = LocalDate.now().withDayOfMonth(1);
+        LocalDate lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
+
+        LocalDateTime start = firstDay.atStartOfDay();
+        LocalDateTime end = lastDay.atTime(LocalTime.MAX);
+
+        Page<Expense> page = expenseRepository.findByCompanyIdWithRelationsAndDateRange(
+                companyId, start, end, pageable
+        );
+
+        return page.map(this::toResponseWithRelations);
+    }
 
     public List<ExpenseResponse> getAll() {
         try {
@@ -125,7 +146,7 @@ public class ExpenseService {
 
     private ExpenseResponse toResponse(Expense e) {
         return ExpenseResponse.builder()
-                .id(e.getId())
+                .id(Math.toIntExact(Long.valueOf(e.getId())))
                 .value(e.getValor())
                 .description(e.getDescription())
                 .purchaseDate(e.getBuyDate())
@@ -133,6 +154,33 @@ public class ExpenseService {
                 .categoryId(e.getCategory().getId())
                 .addressId(e.getLocal().getId())
                 .paymentTypeId(Math.toIntExact(e.getPaymentType().getId()))
+                .build();
+    }
+
+    private ExpensePaginatedResponse toResponseWithRelations(Expense expense) {
+        return ExpensePaginatedResponse.builder()
+                .id(Long.valueOf(expense.getId()))
+                .value(expense.getValor())
+                .buyDate(expense.getBuyDate())
+                .description(expense.getDescription())
+
+                .companyId(Long.valueOf(expense.getCompany().getId()))
+                .companyName(expense.getCompany().getCompany())
+
+                .paymentTypeId(expense.getPaymentType().getId())
+                .paymentTypeDescription(expense.getPaymentType().getDescription())
+
+                .categoryId(Long.valueOf(expense.getCategory().getId()))
+                .categoryName(expense.getCategory().getName())
+
+                .addressId(Long.valueOf(expense.getLocal().getId()))
+                .state(expense.getLocal().getState())
+                .city(expense.getLocal().getCity())
+                .district(expense.getLocal().getDistrict())
+                .street(expense.getLocal().getStreet())
+                .number(expense.getLocal().getNumber())
+                .complement(expense.getLocal().getComplement())
+
                 .build();
     }
 }

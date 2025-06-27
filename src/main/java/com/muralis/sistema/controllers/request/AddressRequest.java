@@ -17,6 +17,5 @@ public class AddressRequest {
     @NotBlank
     @Pattern(regexp = "^\\d{1,4}(-\\d{1,4})?$", message = "Favor inserir um número válido.")
     private String number;
-    @NotBlank
     private String complement;
 }
