@@ -13,8 +13,6 @@ public class ExpenseRequest {
     @NotBlank
     private String description;
     @NotNull
-    private Integer companyId;
-    @NotNull
     private Integer paymentTypeId;
     @NotNull
     private Integer categoryId;

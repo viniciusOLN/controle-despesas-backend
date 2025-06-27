@@ -30,10 +30,6 @@ public class Expense {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "id_empresa")
-    private Company company;
-
-    @ManyToOne
     @JoinColumn(name = "id_tipo_pagamento")
     private PaymentType paymentType;
 

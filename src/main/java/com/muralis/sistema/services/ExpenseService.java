@@ -29,9 +29,6 @@ public class ExpenseService {
     private ExpenseRepository expenseRepository;
 
     @Autowired
-    CompanyRepository companyRepository;
-
-    @Autowired
     CategoryExpenseRepository categoryExpenseRepository;
 
     @Autowired
@@ -40,16 +37,14 @@ public class ExpenseService {
     @Autowired
     PaymentRepository paymentRepository;
 
-    public Page<ExpensePaginatedResponse> getByCompanyCurrentMonth(Long companyId, Pageable pageable) {
+    public Page<ExpensePaginatedResponse> getByCurrentMonth(Pageable pageable) {
         LocalDate firstDay = LocalDate.now().withDayOfMonth(1);
         LocalDate lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
 
         LocalDateTime start = firstDay.atStartOfDay();
         LocalDateTime end = lastDay.atTime(LocalTime.MAX);
 
-        Page<Expense> page = expenseRepository.findByCompanyIdWithRelationsAndDateRange(
-                companyId, start, end, pageable
-        );
+        Page<Expense> page = expenseRepository.findByDateRange(start, end, pageable);
 
         return page.map(this::toResponseWithRelations);
     }
@@ -84,9 +79,6 @@ public class ExpenseService {
         Expense e = expenseRepository.findById(id)
                 .orElseThrow(() -> new CustomException("Despesa não encontrada. Por favor utilize um id válido."));
 
-        Company company = companyRepository.findById(Long.valueOf(request.getCompanyId()))
-                .orElseThrow(() -> new CustomException("Empresa não encontrada. Por favor utilize um id válido."));
-
         CategoryExpense category = categoryExpenseRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new CustomException("Categoria não encontrada. Por favor utilize um id válido."));
 
@@ -98,7 +90,6 @@ public class ExpenseService {
 
         e.setValor(request.getValue());
         e.setBuyDate(LocalDateTime.parse(request.getDescription()));
-        e.setCompany(company);
         e.setCategory(category);
         e.setLocal(address);
         e.setPaymentType(paymentType);
@@ -122,9 +113,6 @@ public class ExpenseService {
     }
 
     private Expense toEntity(ExpenseRequest r) throws ChangeSetPersister.NotFoundException {
-        Company company = companyRepository.findById(Long.valueOf(r.getCompanyId()))
-                .orElseThrow(() -> new CustomException("Empresa não encontrada. Por favor utilize um id válido."));
-
         CategoryExpense category = categoryExpenseRepository.findById(r.getCategoryId())
                 .orElseThrow(() -> new CustomException("Categoria não encontrada. Por favor utilize um id válido."));
 
@@ -137,7 +125,6 @@ public class ExpenseService {
         return Expense.builder()
                 .valor(r.getValue())
                 .description(r.getDescription())
-                .company(company)
                 .category(category)
                 .local(address)
                 .paymentType(paymentType)
@@ -150,7 +137,6 @@ public class ExpenseService {
                 .value(e.getValor())
                 .description(e.getDescription())
                 .purchaseDate(e.getBuyDate())
-                .companyId(e.getCompany().getId())
                 .categoryId(e.getCategory().getId())
                 .addressId(e.getLocal().getId())
                 .paymentTypeId(Math.toIntExact(e.getPaymentType().getId()))
@@ -163,9 +149,6 @@ public class ExpenseService {
                 .value(expense.getValor())
                 .buyDate(expense.getBuyDate())
                 .description(expense.getDescription())
-
-                .companyId(Long.valueOf(expense.getCompany().getId()))
-                .companyName(expense.getCompany().getCompany())
 
                 .paymentTypeId(expense.getPaymentType().getId())
                 .paymentTypeDescription(expense.getPaymentType().getDescription())

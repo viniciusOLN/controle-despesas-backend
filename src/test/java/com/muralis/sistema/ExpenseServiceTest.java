@@ -32,7 +32,6 @@ class ExpenseServiceTest {
                 .valor(new BigDecimal("1000.00"))
                 .buyDate(LocalDateTime.now())
                 .description("Aqui uma descrição da despesa que eu fiz")
-                .company(new Company(1, "Empresa de testes"))
                 .paymentType(new PaymentType(1L, "Cartão"))
                 .category(new CategoryExpense(1, "Alimentação", "Categoria de comidas"))
                 .local(new Address(1, "SP", "São Paulo", "Centro", "Rua Edivaldo Fernandes", "50", "Minha casa ali"))

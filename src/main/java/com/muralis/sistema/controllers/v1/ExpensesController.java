@@ -41,7 +41,7 @@ public class ExpensesController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ExpensePaginatedResponse> pageResult = expenseService.getByCompanyCurrentMonth(companyId, pageable);
+        Page<ExpensePaginatedResponse> pageResult = expenseService.getByCurrentMonth(pageable);
 
         List<ExpensePaginatedResponse> list = pageResult.getContent();
         return ResponseEntity.ok(ResponseBase.ok(list));

@@ -15,10 +15,6 @@ public class ExpensePaginatedResponse {
     private LocalDateTime buyDate;
     private String description;
 
-    // Empresa
-    private Long companyId;
-    private String companyName;
-
     // Tipo de pagamento
     private Long paymentTypeId;
     private String paymentTypeDescription;
