@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class ExpenseRequest {
@@ -12,6 +13,7 @@ public class ExpenseRequest {
     private BigDecimal value;
     @NotBlank
     private String description;
+    private LocalDateTime buyDate;
     @NotNull
     private Integer paymentTypeId;
     @NotNull

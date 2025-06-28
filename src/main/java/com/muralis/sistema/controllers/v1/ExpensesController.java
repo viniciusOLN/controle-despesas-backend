@@ -36,7 +36,6 @@ public class ExpensesController {
     @GetMapping("/by-company-month")
     @Operation(summary = "Pega todas as despesas do mês atual de uma empresa, com paginação")
     public ResponseEntity<ResponseBase<List<ExpensePaginatedResponse>>> getByCompany(
-            @RequestParam Long companyId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {

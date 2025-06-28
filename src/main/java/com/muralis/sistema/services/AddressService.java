@@ -70,11 +70,13 @@ public class AddressService {
         Address existing = addressRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new CustomException("Endereço não encontrado."));
 
+        System.out.println(request.toString());
+
         existing.setState(request.getState());
         existing.setCity(request.getCity());
         existing.setZipCode(request.getZipCode());
         existing.setDistrict(request.getDistrict());
-        existing.setState(request.getStreet());
+        existing.setStreet(request.getStreet());
         existing.setNumber(request.getNumber());
         existing.setComplement(request.getComplement());
 

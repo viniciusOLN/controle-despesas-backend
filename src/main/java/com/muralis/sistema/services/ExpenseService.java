@@ -67,7 +67,6 @@ public class ExpenseService {
 
     public Integer create(ExpenseRequest request) throws ChangeSetPersister.NotFoundException {
         Expense expense = toEntity(request);
-        expense.setBuyDate(LocalDateTime.now());
         try{
             return expenseRepository.save(expense).getId();
         }catch (Exception e){
@@ -89,7 +88,8 @@ public class ExpenseService {
                         .orElseThrow();
 
         e.setValor(request.getValue());
-        e.setBuyDate(LocalDateTime.parse(request.getDescription()));
+        e.setDescription(request.getDescription());
+        e.setBuyDate(request.getBuyDate());
         e.setCategory(category);
         e.setLocal(address);
         e.setPaymentType(paymentType);
@@ -125,6 +125,7 @@ public class ExpenseService {
         return Expense.builder()
                 .valor(r.getValue())
                 .description(r.getDescription())
+                .buyDate(r.getBuyDate())
                 .category(category)
                 .local(address)
                 .paymentType(paymentType)
