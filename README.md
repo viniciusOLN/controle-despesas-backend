@@ -26,7 +26,7 @@ Para rodar sem docker, é necessário a criação do banco de dados e suas respe
 Os seguintes comandos são necessários para que a aplicação se comporte da forma esperada:
 
 ````Bash
-CREATE DATABASE sistema_despesas
+CREATE DATABASE sistema_despesas;
 
 CREATE TABLE IF NOT EXISTS tipos_pagamentos (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
