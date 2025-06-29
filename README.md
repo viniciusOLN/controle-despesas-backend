@@ -21,6 +21,14 @@ A aplicação está configurada para ouvir o banco Mysql pela porta 3307, logo �
 
 Para rodar a aplicação basta usar alguma IDE de preferencia que suporte rodar aplicações SpringBoot, sendo possível também a opção por linha de comando. O único diferencial para a versão do docker é que o banco foi configurado na porta 3306, padrão do mysql.
 
+Para rodar sem docker, é necessário a criação de uma tabela e rodar os comandos que estão dentro do projeto no seguinte caminho: sql-init/init.sql
+
+O seguinte comando é necessário antes de rodar os comandos dentro do arquivo init:
+
+````Bash
+CREATE DATABASE sistema_despesas
+````
+
 Em ambas as versões a aplicação está rodando na porta 8080.
 
 ## ▶️ Documentação
