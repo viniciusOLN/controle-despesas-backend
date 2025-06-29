@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS despesas (
 );
 
 INSERT INTO tipos_pagamentos (tipo) VALUES
-('Cartão de Crédito'),
-('Crédito'),
-('Débito'),
+('Cartao de Credito'),
+('Credito'),
+('Debito'),
 ('Dinheiro'),
 ('Pix');
 
@@ -45,5 +45,5 @@ INSERT INTO categorias (nome, descricao) VALUES
 ('Roupa', 'Bermudas, calças, etc'),
 ('Tecnologia', 'Notebook, celular, tablet'),
 ('Comida', 'Alimentos perecíveis'),
-('Outros');
+('Outros', 'Outros');
 
