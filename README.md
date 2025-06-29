@@ -19,7 +19,7 @@ docker compose up -build
 ````
 A aplicação está configurada para ouvir o banco Mysql pela porta 3307, logo é necesário confirmar que nada está rodando na porta referida.
 
-Para rodar a aplicação basta usar alguma IDE de preferencia que suporte rodar aplicações SpringBoot, sendo possível também a opção por linha de comando. O único diferencial para a versão do docker é que o banco foi configurado na porta 3306, padrão do mysql.
+Para rodar a aplicação sem docker basta usar alguma IDE de preferencia que suporte rodar aplicações SpringBoot, sendo possível também a opção por linha de comando. O único diferencial para a versão do docker é que o banco foi configurado na porta 3306, padrão do mysql.
 
 Para rodar sem docker, é necessário a criação do banco de dados e suas respectivas tabelas e dados.
 
