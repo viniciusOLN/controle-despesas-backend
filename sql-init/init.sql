@@ -33,3 +33,17 @@ CREATE TABLE IF NOT EXISTS despesas (
     FOREIGN KEY (id_categoria) REFERENCES categorias(id),
     FOREIGN KEY (id_local) REFERENCES endereco(id)
 );
+
+INSERT INTO tipos_pagamentos (tipo) VALUES
+('Cartão de Crédito'),
+('Crédito'),
+('Débito'),
+('Dinheiro'),
+('Pix');
+
+INSERT INTO categorias (nome, descricao) VALUES
+('Roupa', 'Bermudas, calças, etc'),
+('Tecnologia', 'Notebook, celular, tablet'),
+('Comida', 'Alimentos perecíveis'),
+('Outros');
+
