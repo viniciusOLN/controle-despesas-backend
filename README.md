@@ -28,6 +28,8 @@ Os seguintes comandos são necessários para que a aplicação se comporte da fo
 ````Bash
 CREATE DATABASE sistema_despesas;
 
+USE sistema_despesas;
+
 CREATE TABLE IF NOT EXISTS tipos_pagamentos (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100)
